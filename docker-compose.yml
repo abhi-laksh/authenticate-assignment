@@ -1,0 +1,33 @@
+version: "3.9"
+
+services:
+  node_app:
+    container_name: node_app
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - PG_DB=ticketdb
+      - PG_USER=ticketadmin
+      - PG_PASSWORD=ticketadmin123
+      - PG_HOST=node_db
+    depends_on:
+      - node_db
+  
+  node_db:
+    container_name: node_db
+    image: postgres:14
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=ticketdb
+      - POSTGRES_USER=ticketadmin
+      - POSTGRES_PASSWORD=ticketadmin123
+    volumes:
+      - node_db_data:/var/lib/postgresql/data
+
+volumes:
+  node_db_data: {}
+
+
+
